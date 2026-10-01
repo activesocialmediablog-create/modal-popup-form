@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<title>JavaScript Project| Sign Up Form |Modal Pop Up| </title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	
+
+<style>
+
+body {
+padding: 2rem;
+background-color: #f6f7f9;
+
+}
+
+main {
+margin: 0 auto;
+background-color: #eaf2fd;
+max-width:90%;
+padding: 1rem 2rem;
+}
+
+.form-title {
+text-align:center;
+}
+
+/*
+input {
+  padding: 8px;
+  width: 260px;
+  margin-bottom: 4px;
+}*/
+
+
+/*form {
+  background: #fff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(15,23,42,0.12);
+  display: grid;
+  gap: 18px;
+  height: auto;
+
+}*/
+
+form {
+ /* background-color: #f4f4f4;*/
+  margin: 8% auto;
+  border-radius: 50px;
+  /*border-radius: 30px;*/
+  /*padding: 20px;*/
+  width: 75%;
+  box-shadow: 5px 8px rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgb 0, 0, 0.17);
+  animation-name: modalopen;
+  animation-duration: 2s;
+  /*animation-name: modalopen;
+  duration: 1s;*/
+}
+
+
+input, textarea {
+  border: 1px solid #d0d8e4;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 1rem;
+margin: 5px 0;
+
+}
+input:focus, textarea:focus {
+  border-color: #6366f1;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
+}
+
+
+.error {
+  color: red;
+  margin: 0;
+}
+.ok {
+  color: green;
+  margin: 0;
+}
+.field {
+  margin-bottom: 12px;
+}
+
+
+label {
+  font-weight: 600;
+  color: #1f2937;
+margin-bottom: 1.5rem;
+
+}
+
+/* The overlay (background) */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Show the modal */
+.modal-overlay.show {
+  display: block;
+}
+
+/* The modal box */
+.modal-box {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+
+/* Close button */
+.modal-close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.sign-up {
+background: #1C7947;
+color:white;
+ border: none;
+  /*border: 1px solid black;*/
+  padding: 15px 0;
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+transition: .6s ease;
+
+}
+
+.sign-up:hover, .cancel-btn:hover{
+box-shadow: 5px 5px 15px 0px rgba(0, 0, 0, 0.20);
+border-radius: 8px;
+}
+
+.cancel-btn {
+background: darkred;
+color:white;
+ border: none;
+  /*border: 1px solid black;*/
+  padding: 15px 0;
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+transition: .6s ease;
+
+
+}
+
+</style>
+
+</head>
+
+<body>
+<main>
+<h1>JavaScript Project</h1>
+<h2>Modal Popup</h2>
+
+<button id="openBtn" class="sign-up">Sign Up Form</button>
+
+<div id="modal" class="modal-overlay">
+  <div class="modal-box">
+    <button id="closeBtn" class="modal-close">×</button>
+
+    
+    <h1 class=form-title>Sign Up Form</h1>
+
+<form id="signupForm">
+
+<div class="field">
+  <label>Name:</label><br>
+  <input id="name" type="text" placeholder="Your name">
+  <p id="nameError" class="error"></p>
+</div>
+
+<div class="field">
+  <label>Email:</label><br>
+  <input id="email" type="text" placeholder="name@example.com">
+  <p id="emailError" class="error"></p>
+</div>
+
+<div class="field">
+  <label>Password:</label><br>
+  <input id="password" type="password" placeholder="Min 8 characters">
+  <p id="passwordError" class="error"></p>
+</div>
+
+<div class="field">
+  <label>Confirm Password:</label><br>
+  <input id="confirm" type="password" placeholder="Repeat password">
+  <p id="confirmError" class="error"></p>
+</div>
+
+<button type="submit" class="sign-up">Sign Up</button>
+<button id="cancelBtn" class="cancel-btn">Cancel</button>
+
+</form>
+
+<p id="result"></p>
+
+  </div>
+</div>
+
+<script>
+const modal = document.getElementById("modal");
+const openBtn = document.getElementById("openBtn");
+const closeBtn = document.getElementById("closeBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+
+function openModal() {
+  modal.classList.add("show");
+}
+
+function closeModal() {
+  modal.classList.remove("show");
+}
+
+openBtn.addEventListener("click", openModal);
+closeBtn.addEventListener("click", closeModal);
+cancelBtn.addEventListener("click", closeModal);
+
+/* Close when clicking outside the modal box */
+modal.addEventListener("click", function (event) {
+  if (event.target === modal) {
+    closeModal();
+  }
+});
+
+/* Close when pressing Escape */
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closeModal();
+  }
+});
+
+// Create an Object for each Field
+const form = document.getElementById("signupForm");
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const passInput = document.getElementById("password");
+const confirmInput = document.getElementById("confirm");
+const nameError = document.getElementById("nameError");
+const emailError = document.getElementById("emailError");
+const passError = document.getElementById("passwordError");
+const confirmError = document.getElementById("confirmError");
+const result = document.getElementById("result");
+
+// Function to Display Error
+function showError(el, message) {
+  el.innerHTML = message;
+}
+
+// Function to Clear Error
+function clearError(el) {
+  el.innerHTML = "";
+}
+
+// Function to Validate Name
+function validateName() {
+  let value = nameInput.value.trim();
+  if (value.length < 2) {
+    showError(nameError, "Name must be at least 2 characters.");
+    return false;
+  }
+  clearError(nameError);
+  return true;
+}
+
+// Function to Validate Email
+function validateEmail() {
+  let value = emailInput.value.trim();
+  if (!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))) {
+    showError(emailError, "Enter a valid email address.");
+    return false;
+  }
+  clearError(emailError);
+  return true;
+}
+
+// Function to Validate Password
+function validatePassword() {
+  let value = passInput.value;
+  if (value.length < 8) {
+    showError(passError, "Password must be at least 8 characters.");
+    return false;
+  }
+  clearError(passError);
+  return true;
+}
+
+// Function to Validate Confirm
+function validateConfirm() {
+  let pass = passInput.value;
+  let confirm = confirmInput.value;
+  if (confirm === "") {
+    showError(confirmError, "Please confirm your password.");
+    return false;
+  }
+  if (confirm !== pass) {
+    showError(confirmError, "Passwords do not match.");
+    return false;
+  }
+  clearError(confirmError);
+  return true;
+}
+
+// Function to Validate Form
+function validateForm() {
+  let okName = validateName();
+  let okEmail = validateEmail();
+  let okPass = validatePassword();
+  let okConfirm = validateConfirm();
+  return okName && okEmail && okPass && okConfirm;
+}
+
+// Prevent Default Reloading
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+// Clear Result
+  result.innerHTML = "";
+
+// Validate Form
+  if (validateForm()) {
+    result.innerHTML = "Form is valid!";
+    result.className = "ok";
+  } else {
+    result.innerHTML = "Please fix the errors.";
+    result.className = "error";
+  }
+});
+
+</script>
+</main>
+
+</body>
+</html>
